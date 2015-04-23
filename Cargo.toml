@@ -1,0 +1,11 @@
+[package]
+name = "rustedirc"
+version = "0.1.0"
+authors = ["Vladimir Pouzanov <farcaller@gmail.com>"]
+
+[dependencies.stainless]
+# git = "https://github.com/reem/stainless"
+path = "../stainless"
+
+[dependencies.hamcrest]
+git = "https://github.com/carllerche/hamcrest-rust.git"
