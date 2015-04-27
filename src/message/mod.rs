@@ -1,9 +1,5 @@
-use context::Context;
 use std::fmt;
 
-pub mod password;
-pub mod nick;
-pub mod user;
 pub mod error;
 mod numerics;
 
@@ -13,29 +9,37 @@ pub struct Message<'a> {
     pub arguments: Vec<&'a str>,
 }
 
-pub type MessageProcessor = fn(ctx: &mut Context, message: &Message) -> Result<(), error::IRCError>;
+// pub type MessageProcessor = fn(ctx: &mut Context, message: &Message) -> Result<(), error::IRCError>;
 
-pub fn resolve(line: &str) -> Result<(Message, MessageProcessor), error::IRCError> {
-    let raw_message = if let Some(msg) = Message::new(line) {
-        msg
-    } else {
-        return Err(error::IRCError::ignore())  // TODO: unparseable line
-    };
+// pub fn resolve(line: &str) -> Result<(Message, MessageProcessor), error::IRCError> {
+//     let raw_message = if let Some(msg) = Message::new(line) {
+//         msg
+//     } else {
+//         return Err(error::IRCError::ignore())  // TODO: unparseable line
+//     };
 
-    match raw_message.command.to_uppercase().as_str() {
-        "PASS" => Ok((raw_message, password::process_pass)),
-        "NICK" => Ok((raw_message, nick::process_nick)),
-        "USER" => Ok((raw_message, user::process_user)),
-        _ => Err(error::IRCError::ignore()) // TODO: (format!("unknown command '{}'", other).as_str()))
-    }
-}
+//     match raw_message.command.to_uppercase().as_str() {
+//         // "PASS" => Ok((raw_message, password::process_pass)),
+//         "NICK" => Ok((raw_message, nick::process_nick)),
+//         // "USER" => Ok((raw_message, user::process_user)),
+//         _ => Err(error::IRCError::ignore()) // TODO: (format!("unknown command '{}'", other).as_str()))
+//     }
+// }
 
-pub fn process(ctx: &mut Context, line: &str) -> Result<(), error::IRCError> {
-    let (raw_message, handler) = try!(resolve(line));
-    handler(ctx, &raw_message)
-}
+// pub fn process(server: &Server, user: &UserClient, line: &str) -> Result<(), error::IRCError> {
+//     let (raw_message, handler) = try!(resolve(line));
+//     handler(server, user, &raw_message)
+// }
 
 impl<'a> Message<'a> {
+    pub fn build(prefix: Option<&'a str>, command: &'static str, arguments: Vec<&'a str>) -> Message<'a> {
+        Message {
+            prefix: prefix,
+            command: command,
+            arguments: arguments
+        }
+    }
+
     pub fn new(line: &'a str) -> Option<Message> {
         let mut remains = line;
 

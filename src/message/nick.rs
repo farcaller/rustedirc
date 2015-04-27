@@ -2,7 +2,7 @@ use std::str::pattern::Pattern;
 
 use message::Message;
 use message::error::*;
-use context::Context;
+use server::*;
 
 /// 4.1.2 Nick message
 ///
@@ -35,17 +35,17 @@ use context::Context;
 ///    NICK Wiz                        ; Introducing new nick "Wiz".
 ///
 ///    :WiZ NICK Kilroy                ; WiZ changed his nickname to Kilroy.
-pub fn process_nick(ctx: &mut Context, message: &Message) -> Result<(), IRCError> {
+pub fn process_nick(server: &Server, user: &UserClient, message: &Message) -> Result<(), IRCError> {
     if message.arguments.len() != 1 {
         Err(IRCError::new(":No nickname given", ERR_NONICKNAMEGIVEN))
     } else if !is_nickname_valid(message.arguments[0]) {
         Err(IRCError::new(format!("{} :Erroneus nickname", message.arguments[0]).as_str(),
             ERR_ERRONEUSNICKNAME))
-    } else if ctx.get_user(message.arguments[0]).is_some() {
+    } else if server.user_by_nickname(message.arguments[0]).is_some() {
         Err(IRCError::new(format!("{} :Nickname is already in use", message.arguments[0]).as_str(),
             ERR_NICKNAMEINUSE))
     } else {
-        ctx.user().set_nickname(message.arguments[0]);
+        user.set_nickname(message.arguments[0]);
         Ok(())
     }
 }

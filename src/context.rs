@@ -13,27 +13,27 @@ pub trait Context {
     fn server_name(&self) -> String;
 }
 
-pub struct ClientState {
-    nickname: String,
-}
+// pub struct ClientState {
+//     nickname: String,
+// }
 
-pub struct ServerState {
-    server_name: String,
-    clients: HashMap<String, ClientState>
-}
+// pub struct ServerState {
+//     server_name: String,
+//     clients: HashMap<String, ClientState>
+// }
 
-impl ServerState {
-    pub fn new<'a>(server_name: String) -> ServerState {
-        ServerState {
-            server_name: server_name,
-            clients: HashMap::new(),
-        }
-    }
-}
+// impl ServerState {
+//     pub fn new<'a>(server_name: String) -> ServerState {
+//         ServerState {
+//             server_name: server_name,
+//             clients: HashMap::new(),
+//         }
+//     }
+// }
 
-pub struct ClientContext<'a> {
-    server_state: &'a mut ServerState,
-}
+// pub struct ClientContext<'a> {
+//     server_state: &'a mut ServerState,
+// }
 
 // impl<'a> Context for ClientContext<'a> {
 //     fn get_user(&self, username: &str) -> Option<&UserContext> {

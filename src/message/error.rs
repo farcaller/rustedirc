@@ -1,5 +1,5 @@
+// use server::{Server, Client};
 use std::{fmt, error};
-use context::Context;
 
 pub use super::numerics::rfc1459::error_replies::*;
 pub use super::numerics::rfc1459::command_replies::*;
@@ -32,10 +32,10 @@ impl IRCError {
         }
     }
 
-    pub fn to_message(&self, ctx: &mut Context) -> String {
-        format!(":{} {} {} {}", ctx.server_name(), self.error_code,
-            ctx.user().identifier(), self.raw_args.as_ref().unwrap())
-    }
+    // pub fn to_message(&self, server: &Server, client: &Client) -> String {
+    //     format!(":{} {} {} {}", server.name(), self.error_code,
+    //         ctx.user().identifier(), self.raw_args.as_ref().unwrap())
+    // }
 }
 
 impl fmt::Display for IRCError {
